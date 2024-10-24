@@ -20,7 +20,7 @@ export const App = () => {
   const showNoPostsYet =
     !!selectedUser && !isLoading && !hasPostsLoadingError && !posts.length;
 
-  const showPostList =
+  const isPostListVisible =
     !!selectedUser && !isLoading && !hasPostsLoadingError && !!posts.length;
 
   const handleLoadPosts = (userId: User['id']) => {
@@ -70,7 +70,7 @@ export const App = () => {
                   </div>
                 )}
 
-                {showPostList && (
+                {isPostListVisible && (
                   <PostsList
                     posts={posts}
                     selectedPost={selectedPost}

@@ -16,6 +16,7 @@ export const UserSelector: FC<Props> = ({
   onLoadPosts,
 }) => {
   const [users, setUsers] = useState<User[]>([]);
+  const [hasLoadingUserError, setHasLoadingUserError] = useState(false);
   const [isActiveDropdown, setIsActiveDropdown] = useState(false);
 
   const handleSelectUser = (user: User) => {
@@ -25,10 +26,16 @@ export const UserSelector: FC<Props> = ({
   };
 
   useEffect(() => {
+    setHasLoadingUserError(false);
+
     getUsers()
       .then(setUsers)
-      .catch(() => {});
+      .catch(() => setHasLoadingUserError(true));
   }, []);
+
+  if (hasLoadingUserError) {
+    return <div className="notification is-danger">Unable to load users</div>;
+  }
 
   return (
     <div

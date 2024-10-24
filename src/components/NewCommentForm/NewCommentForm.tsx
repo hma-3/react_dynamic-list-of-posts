@@ -24,6 +24,7 @@ export const NewCommentForm: FC<Props> = ({ postId, setComments }) => {
   const [bodyQuery, setBodyQuery] = useState('');
   const [hasBodyError, setHasBodyError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasAddingError, setHasAddingError] = useState(false);
 
   const handleNameInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setHasNameError(false);
@@ -54,6 +55,7 @@ export const NewCommentForm: FC<Props> = ({ postId, setComments }) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
+    setHasAddingError(false);
 
     const trimmedNameQuery = nameQuery.trim();
     const trimmedEmailQuery = emailQuery.trim();
@@ -75,12 +77,12 @@ export const NewCommentForm: FC<Props> = ({ postId, setComments }) => {
       email: trimmedEmailQuery,
       body: trimmedBodyQuery,
     })
-      .then(newComment =>
-        setComments(currentComments => [...currentComments, newComment]),
-      )
+      .then(newComment => {
+        setComments(currentComments => [...currentComments, newComment]);
+        setBodyQuery('');
+      })
+      .catch(() => setHasAddingError(true))
       .finally(() => setIsLoading(false));
-
-    setBodyQuery('');
   };
 
   return (
@@ -210,6 +212,10 @@ export const NewCommentForm: FC<Props> = ({ postId, setComments }) => {
           </button>
         </div>
       </div>
+
+      {hasAddingError && (
+        <div className="notification is-danger">Something went wrong!</div>
+      )}
     </form>
   );
 };

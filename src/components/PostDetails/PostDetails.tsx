@@ -22,7 +22,8 @@ export const PostDetails: FC<Props> = ({ post }) => {
   const showNoCommentsMessage =
     !isLoading && !hasCommentsError && !comments.length;
 
-  const showComments = !isLoading && !hasCommentsError && !!comments.length;
+  const isCommentListVisible =
+    !isLoading && !hasCommentsError && !!comments.length;
 
   const showWriteCommentButton =
     !isLoading && !showNewCommentForm && !hasCommentsError;
@@ -72,7 +73,7 @@ export const PostDetails: FC<Props> = ({ post }) => {
             </p>
           )}
 
-          {showComments && (
+          {isCommentListVisible && (
             <CommentsList
               comments={comments}
               onDeleteComment={handleDeleteComment}
